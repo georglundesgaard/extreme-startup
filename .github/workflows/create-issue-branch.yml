@@ -1,0 +1,14 @@
+name: CI
+
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create Issue Branch
+      uses: robvanderleek/create-issue-branch@v1.0
