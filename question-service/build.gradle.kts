@@ -9,30 +9,30 @@ plugins {
 
 group = "no.lundesgaard.extreme-startup"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_13
 
 repositories {
 	mavenCentral()
 }
 
-extra["springCloudVersion"] = "Hoxton.RELEASE"
+//extra["springCloudVersion"] = "Hoxton.RELEASE"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+//	implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 }
 
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-	}
-}
+//dependencyManagement {
+//	imports {
+//		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+//	}
+//}
 
 tasks.withType<Test> {
 	useJUnitPlatform()
