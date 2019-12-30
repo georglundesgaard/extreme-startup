@@ -4,6 +4,7 @@ import no.lundesgaard.extremestartup.question.QuestionType.ADDITION
 import no.lundesgaard.extremestartup.question.QuestionType.ADDITION_ADDITION
 import no.lundesgaard.extremestartup.question.QuestionType.ADDITION_MULTIPLICATION
 import no.lundesgaard.extremestartup.question.QuestionType.FIBONACCI
+import no.lundesgaard.extremestartup.question.QuestionType.GENERAL_KNOWLEDGE
 import no.lundesgaard.extremestartup.question.QuestionType.MAXIMUM
 import no.lundesgaard.extremestartup.question.QuestionType.MULTIPLICATION
 import no.lundesgaard.extremestartup.question.QuestionType.MULTIPLICATION_ADDITION
@@ -12,6 +13,7 @@ import no.lundesgaard.extremestartup.question.QuestionType.PRIMES
 import no.lundesgaard.extremestartup.question.QuestionType.SQUARE_CUBE
 import no.lundesgaard.extremestartup.question.QuestionType.SUBTRACTION
 import no.lundesgaard.extremestartup.question.QuestionType.WARMUP
+import org.yaml.snakeyaml.Yaml
 import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.pow
@@ -24,7 +26,7 @@ fun questionMap() = linkedMapOf(
         MAXIMUM.typeName to ::MaximumQuestion,
         MULTIPLICATION.typeName to ::MultiplicationQuestion,
         SQUARE_CUBE.typeName to ::SquareCubeQuestion,
-//        GENERAL_KNOWLEDGE.typeName to GeneralKnowledgeQuestion(),
+        GENERAL_KNOWLEDGE.typeName to ::GeneralKnowledgeQuestion,
         PRIMES.typeName to ::PrimesQuestion,
         SUBTRACTION.typeName to ::SubtractionQuestion,
         FIBONACCI.typeName to ::FibonacciQuestion,
@@ -72,6 +74,7 @@ enum class QuestionType(val typeName: String) {
     MAXIMUM("max"),
     MULTIPLICATION("mult"),
     SQUARE_CUBE("sq_cb"),
+    GENERAL_KNOWLEDGE("general"),
     PRIMES("primes"),
     SUBTRACTION("sub"),
     FIBONACCI("fib"),
@@ -90,14 +93,14 @@ abstract class Question(val id: String = questionId()) {
     fun checkAnswer(answer: String) = (if (correctAnswer() == answer) points else -points).toString()
     abstract fun asText(): String
     abstract fun correctAnswer(): String
-    override fun toString() = "%s: %s".format(id, asText())
+    override fun toString() = "$id: ${asText()}"
 }
 
 abstract class BinaryMathsQuestion(val n1: Int = nextInt(20), val n2: Int = nextInt(20)) : Question()
 
 abstract class TernaryMathsQuestion(val n1: Int = nextInt(20), val n2: Int = nextInt(20), val n3: Int = nextInt(20)) : Question()
 
-abstract class SelectFromListOfNumbersQuestion(val candidateNumbers: IntArray, val numbers: IntArray = initNumbers(candidateNumbers)) : Question() {
+abstract class SelectFromListOfNumbersQuestion(candidateNumbers: IntArray, val numbers: IntArray = initNumbers(candidateNumbers)) : Question() {
     override fun correctAnswer(): String = numbers.filter { shouldBeSelected(it) }.joinToString()
     abstract fun shouldBeSelected(number: Int): Boolean
 }
@@ -105,76 +108,76 @@ abstract class SelectFromListOfNumbersQuestion(val candidateNumbers: IntArray, v
 class MaximumQuestion : SelectFromListOfNumbersQuestion(IntArray(100) { it + 1 }) {
     override val type = MAXIMUM
     override val points = 40
-    override fun asText() = "which of the following numbers is the largest: %s".format(numbers.joinToString())
+    override fun asText() = "which of the following numbers is the largest: ${numbers.joinToString()}"
     override fun shouldBeSelected(number: Int) = number == numbers.max()
 }
 
 class AdditionQuestion : BinaryMathsQuestion() {
     override val type = ADDITION
-    override fun asText() = "what is %d plus %d".format(n1, n2)
+    override fun asText() = "what is $n1 plus $n2"
     override fun correctAnswer() = (n1 + n2).toString()
 }
 
 class SubtractionQuestion : BinaryMathsQuestion() {
     override val type = SUBTRACTION
-    override fun asText() = "what is %d minus %d".format(n1, n2)
+    override fun asText() = "what is $n1 minus $n2"
     override fun correctAnswer() = (n1 - n2).toString()
 }
 
 class MultiplicationQuestion : BinaryMathsQuestion() {
     override val type = MULTIPLICATION
-    override fun asText() = "what is %d multiplied by %d".format(n1, n2)
+    override fun asText() = "what is $n1 multiplied by $n2"
     override fun correctAnswer() = (n1 * n2).toString()
 }
 
 class AdditionAdditionQuestion : TernaryMathsQuestion() {
     override val type = ADDITION_ADDITION
     override val points = 30
-    override fun asText() = "what is %d plus %d plus %d".format(n1, n2, n3)
+    override fun asText() = "what is $n1 plus $n2 plus $n3"
     override fun correctAnswer() = (n1 + n2 + n3).toString()
 }
 
 class AdditionMultiplicationQuestion : TernaryMathsQuestion() {
     override val type = ADDITION_MULTIPLICATION
     override val points = 60
-    override fun asText() = "what is %d plus %d multiplied by %d".format(n1, n2, n3)
+    override fun asText() = "what is $n1 plus $n2 multiplied by $n3"
     override fun correctAnswer() = (n1 + n2 * n3).toString()
 }
 
 class MultiplicationAdditionQuestion : TernaryMathsQuestion() {
     override val type = MULTIPLICATION_ADDITION
     override val points = 50
-    override fun asText() = "what is %d multiplied by %d plus %d".format(n1, n2, n3)
+    override fun asText() = "what is $n1 multiplied by $n2 plus $n3"
     override fun correctAnswer() = (n1 * n2 + n3).toString()
 }
 
 class PowerQuestion : BinaryMathsQuestion() {
     override val type = POWER
     override val points = 20
-    override fun asText() = "what is %d to the power of %d".format(n1, n2)
+    override fun asText() = "what is $n1 to the power of $n2"
     override fun correctAnswer() = n1.pow(n2).toString()
 }
 
 class SquareCubeQuestion : SelectFromListOfNumbersQuestion(squareCubeCandidateNumbers()) {
     override val type = SQUARE_CUBE
     override val points = 60
-    override fun asText() = "which of the following numbers is both a square and a cube: %s".format(numbers.joinToString())
+    override fun asText() = "which of the following numbers is both a square and a cube: ${numbers.joinToString()}"
     override fun shouldBeSelected(number: Int) = isSquare(number) && isCube(number)
 }
 
 class PrimesQuestion : SelectFromListOfNumbersQuestion(primes(100)) {
     override val type = PRIMES
     override val points = 60
-    override fun asText() = "which of the following numbers are primes: %s".format(numbers.joinToString())
+    override fun asText() = "which of the following numbers are primes: ${numbers.joinToString()}"
     override fun shouldBeSelected(number: Int) = isPrime(number)
 }
 
 class FibonacciQuestion : BinaryMathsQuestion() {
     override val type = FIBONACCI
     override val points = 50
-    override fun asText() = "what is the %s number in the Fibonacci sequence".format(ordinalize(n1 + 4))
+    override fun asText() = "what is the ${ordinalize(n1 + 4)} number in the Fibonacci sequence"
     override fun correctAnswer() = fibonacci(n1 + 4).toString()
-    private fun ordinalize(number: Int) = "%d%s".format(number, ordinal(number))
+    private fun ordinalize(number: Int) = "$number${ordinal(number)}"
     private fun ordinal(number: Int) =
             if ((11..13).contains(number.absoluteValue % 100))
                 "th"
@@ -186,6 +189,22 @@ class FibonacciQuestion : BinaryMathsQuestion() {
             }
 
     private fun fibonacci(number: Int, a: Int = 0, b: Int = 1): Int = if (number > 0) fibonacci(number - 1, b, a + b) else a
+}
+
+private class QuestionCard(question: Any?, correctAnswer: Any?) {
+    val question= question.toString()
+    val correctAnswer = correctAnswer.toString()
+}
+
+class GeneralKnowledgeQuestion : Question() {
+    private var questionCard = Yaml().load<List<Any>>(javaClass.getResourceAsStream("/general-knowledge.yaml"))
+                    .map { (it as? Map<*, *>) ?: throw RuntimeException("unknown question card type: $it") }
+                    .map { QuestionCard(it["question"], it["answer"]) }
+                    .shuffled()
+                    .first()
+    override val type = GENERAL_KNOWLEDGE
+    override fun asText() = questionCard.question
+    override fun correctAnswer() = questionCard.correctAnswer
 }
 
 class WarmupQuestion(private val playerName: String = "unknown") : Question() {
