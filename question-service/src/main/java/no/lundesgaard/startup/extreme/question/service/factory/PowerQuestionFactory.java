@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PowerQuestionFactory extends BinaryMathsQuestionFactory {
     public PowerQuestionFactory(Randomizer randomizer) {
-        super(randomizer, POWER, 20, "what is %d to the power of %d", (n1, n2) -> (int) Math.pow(n1, n2));
+        super(randomizer, POWER, 20, "what is %d to the power of %d", (n1, n2) -> String.valueOf((long) Math.pow(n1, n2)));
     }
 }

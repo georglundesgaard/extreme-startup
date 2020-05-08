@@ -4,8 +4,11 @@ import static no.lundesgaard.startup.extreme.question.model.QuestionType.MULTIPL
 
 import no.lundesgaard.startup.extreme.question.service.Randomizer;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MultiplicationQuestionFactory extends BinaryMathsQuestionFactory {
     public MultiplicationQuestionFactory(Randomizer randomizer) {
-        super(randomizer, MULTIPLICATION, "what is %d multiplied by %d", (n1, n2) -> n1 * n2);
+        super(randomizer, MULTIPLICATION, "what is %d multiplied by %d", (n1, n2) -> String.valueOf(n1 * n2));
     }
 }

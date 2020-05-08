@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SubtractionQuestionFactory extends BinaryMathsQuestionFactory {
     public SubtractionQuestionFactory(Randomizer randomizer) {
-        super(randomizer, SUBTRACTION, "what is %d minus %d", (n1, n2) -> n1 - n2);
+        super(randomizer, SUBTRACTION, "what is %d minus %d", (n1, n2) -> String.valueOf(n1 - n2));
     }
 }
