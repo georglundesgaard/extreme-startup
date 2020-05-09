@@ -1,6 +1,7 @@
 package no.lundesgaard.startup.extreme.question.service;
 
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.ADDITION;
+import static no.lundesgaard.startup.extreme.question.model.QuestionType.FIBONACCI;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.MULTIPLICATION;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.POWER;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.SUBTRACTION;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Randomizer {
-    private static final QuestionType[] QUESTION_TYPES = { ADDITION, SUBTRACTION, MULTIPLICATION, POWER };
+    private static final QuestionType[] QUESTION_TYPES = { ADDITION, SUBTRACTION, MULTIPLICATION, POWER, FIBONACCI };
 
     public int nextInt(int bound) {
         return new Random().nextInt(bound);

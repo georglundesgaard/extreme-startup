@@ -1,6 +1,7 @@
 package no.lundesgaard.startup.extreme.question.service;
 
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.ADDITION;
+import static no.lundesgaard.startup.extreme.question.model.QuestionType.FIBONACCI;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.MULTIPLICATION;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.POWER;
 import static no.lundesgaard.startup.extreme.question.model.QuestionType.SUBTRACTION;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @DisplayName("randomizer tests")
 class RandomizerTest {
-    private static final QuestionType[] QUESTION_TYPES = { ADDITION, SUBTRACTION, MULTIPLICATION, POWER };
+    private static final QuestionType[] QUESTION_TYPES = { ADDITION, SUBTRACTION, MULTIPLICATION, POWER, FIBONACCI };
     
     @MockBean(answer = CALLS_REAL_METHODS)
     private Randomizer randomizer;
@@ -45,7 +46,7 @@ class RandomizerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"0", "1", "2", "3"})
+    @ValueSource(strings = {"0", "1", "2", "3", "4"})
     @DisplayName("next question type can return all question types")
     void nextQuestionType(int index) {
         when(randomizer.nextInt(QUESTION_TYPES.length)).thenReturn(index);
