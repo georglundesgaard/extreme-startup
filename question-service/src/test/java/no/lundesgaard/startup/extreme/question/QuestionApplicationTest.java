@@ -33,7 +33,16 @@ class QuestionApplicationTest {
     private int serverPort;
 
     @ParameterizedTest
-    @ValueSource(strings = {"ADDITION", "SUBTRACTION", "MULTIPLICATION", "POWER", "FIBONACCI"})
+    @ValueSource(strings = {
+            "ADDITION",
+            "SUBTRACTION",
+            "MULTIPLICATION",
+            "POWER",
+            "FIBONACCI",
+            "ADDITION_ADDITION",
+            "ADDITION_MULTIPLICATION",
+            "MULTIPLICATION_ADDITION"
+    })
     @DisplayName("generate random question for each question type")
     void generateRandomQuestion(QuestionType questionType) {
         when(randomizer.nextQuestionType(1)).thenReturn(questionType);
