@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AdditionMultiplicationQuestionFactory.class)
 @DisplayName("addition multiplication question factory tests")
-class AdditionMultiplicationQuestionFactoryTest extends TernaryMathsQuestionFactoryTest {
+class AdditionMultiplicationQuestionFactoryTest extends MathsQuestionFactoryTest {
     @Autowired
     private AdditionMultiplicationQuestionFactory factory;
 
@@ -25,8 +25,8 @@ class AdditionMultiplicationQuestionFactoryTest extends TernaryMathsQuestionFact
 
     private static Stream<Arguments> questions() {
         return Stream.of(
-                arguments("cafebabe", 2, 5, 3, "what is 2 plus 5 multiplied by 3", "17"),
-                arguments("babecafe", 6, 4, 7, "what is 6 plus 4 multiplied by 7", "34")
+                arguments(new int[] { 2, 5, 3 }, "what is 2 plus 5 multiplied by 3", "17"),
+                arguments(new int[] { 6, 4, 7 }, "what is 6 plus 4 multiplied by 7", "34")
         );
     }
 

@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SubtractionQuestionFactory.class)
 @DisplayName("subtraction question factory tests")
-class SubtractionQuestionFactoryTest extends BinaryMathsQuestionFactoryTest {
+class SubtractionQuestionFactoryTest extends MathsQuestionFactoryTest {
     @Autowired
     private SubtractionQuestionFactory factory;
 
@@ -25,8 +25,8 @@ class SubtractionQuestionFactoryTest extends BinaryMathsQuestionFactoryTest {
 
     private static Stream<Arguments> questions() {
         return Stream.of(
-                arguments("cafebabe", 2, 5, "what is 2 minus 5", "-3"),
-                arguments("babecafe", 6, 4, "what is 6 minus 4", "2")
+                arguments(new int[] { 2, 5 }, "what is 2 minus 5", "-3"),
+                arguments(new int[] { 6, 4 }, "what is 6 minus 4", "2")
         );
     }
 
